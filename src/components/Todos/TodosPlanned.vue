@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import DeleteModal from "../DeleteModal.vue"
 import { db } from "../../firebase/config";
-import { collection, onSnapshot, addDoc } from "firebase/firestore";
+import { collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
 import { deletePlanned } from "../../utils/TodoUtils";
 
 const todos = ref([]);
@@ -36,6 +36,15 @@ const alertHandler = (status) => {
   showAlert.value = false;
 };
 
+const setDone = (id) => {
+
+const index = todos.value.findIndex(todo => todo.id === id); // to find index of selected id
+
+  updateDoc(doc(db, "planned", id), {
+    done: !todos.value[index].done
+  });
+};
+
 </script>
 
 <template>
@@ -46,10 +55,10 @@ const alertHandler = (status) => {
   </Teleport>
   <div class="planned">
     <ul>
-      <li class="planned__list" :class="{'done' : todo.done}" v-for="todo in todos">
+      <li class="planned__list" :class="{ 'done': todo.done }" v-for="todo in todos">
         <p class="planned__list__text"> {{ todo.content }} </p>
         <div class="planned__btn">
-          <div class="planned__btn__done"><img class="icon"
+          <div @click="setDone(todo.id)" class="planned__btn__done"><img class="icon"
               src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>
           <div @click="deleteModalOpen(todo.id)" class="planned__btn__delete"><img class="icon"
               src="https://cdn-icons-png.flaticon.com/512/5028/5028066.png" alt=""></div>
