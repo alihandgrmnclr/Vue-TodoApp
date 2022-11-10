@@ -22,8 +22,8 @@ const handleStatus = (status) => {
 
 <style lang="scss" scoped>
 .delete {
-  @apply absolute flex justify-center items-center left-0 right-0 mr-auto ml-auto top-0 w-full h-full;
-  background-color: rgba(0, 0, 0, 0.572);
+  @apply fixed inset-0 flex justify-center items-center w-full h-full;
+  background-color: rgba(0, 0, 0, 0.75);
 
   &__modal {
     @apply flex flex-col justify-center items-center h-[200px] w-[300px] rounded-md bg-white;
