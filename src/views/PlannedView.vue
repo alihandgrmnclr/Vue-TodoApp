@@ -5,6 +5,7 @@ import { addPlanned } from "../utils/TodoUtils"
 
 
 const todoHandler = (content) => {
+  if (content.length <1) return alert("Invalid input");
   addPlanned(content);
 }
 

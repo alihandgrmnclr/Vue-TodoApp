@@ -1,5 +1,5 @@
 import { db } from "../firebase/config";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
 
 export const addDaily = () => {};
 export const deleteDaily = () => {};
@@ -16,7 +16,6 @@ export const addPlanned = (text) => {
     done: false,
   });
 };
-
-export const deletePlanned = () => {
-
+export const deletePlanned = (id) => {
+  deleteDoc(doc(db, "planned", id));
 };

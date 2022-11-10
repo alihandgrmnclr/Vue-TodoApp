@@ -1,12 +1,15 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import DeleteModal from "../DeleteModal.vue"
 import { db } from "../../firebase/config";
 import { collection, onSnapshot, addDoc } from "firebase/firestore";
+import { deletePlanned } from "../../utils/TodoUtils";
 
 const todos = ref([]);
 const showAlert = ref(false);
+const showAlertID = ref(null);
 
-onMounted(async () => {
+onMounted(() => {
   onSnapshot(collection(db, "planned"), (querySnapshot) => {
     const fbTodos = [];
     querySnapshot.forEach((doc) => {
@@ -21,14 +24,26 @@ onMounted(async () => {
   });
 });
 
-const deleteModal = () => {
+const deleteModalOpen = (id) => {
+  showAlertID.value = id;
   showAlert.value = true;
 };
 
+const alertHandler = (status) => {
+  if (!status) return showAlert.value = false;
+  deletePlanned(showAlertID.value);
+  showAlertID.value = null;
+  showAlert.value = false;
+};
 
 </script>
 
 <template>
+  <Teleport to="#app">
+    <template v-if="showAlert">
+      <DeleteModal @setStatus="alertHandler"></DeleteModal>
+    </template>
+  </Teleport>
   <div class="planned">
     <ul>
       <li class="planned__list" :class="{'done' : todo.done}" v-for="todo in todos">
@@ -36,7 +51,7 @@ const deleteModal = () => {
         <div class="planned__btn">
           <div class="planned__btn__done"><img class="icon"
               src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>
-          <div @click="deleteModal" class="planned__btn__delete"><img class="icon"
+          <div @click="deleteModalOpen(todo.id)" class="planned__btn__delete"><img class="icon"
               src="https://cdn-icons-png.flaticon.com/512/5028/5028066.png" alt=""></div>
         </div>
       </li>
