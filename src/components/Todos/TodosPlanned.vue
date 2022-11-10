@@ -2,15 +2,18 @@
 import { onMounted, ref } from "vue";
 import DeleteModal from "../DeleteModal.vue"
 import { db } from "../../firebase/config";
-import { collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
+import { collection, onSnapshot, updateDoc, doc, query, orderBy } from "firebase/firestore";
 import { deletePlanned } from "../../utils/TodoUtils";
 
 const todos = ref([]);
 const showAlert = ref(false);
 const showAlertID = ref(null);
 
+const plannedRef = collection(db, "planned")
+const todoSortedRef = query(plannedRef, orderBy("date", "desc"));
+
 onMounted(() => {
-  onSnapshot(collection(db, "planned"), (querySnapshot) => {
+  onSnapshot(todoSortedRef, (querySnapshot) => {
     const fbTodos = [];
     querySnapshot.forEach((doc) => {
       const todo = {
@@ -40,7 +43,7 @@ const setDone = (id) => {
 
 const index = todos.value.findIndex(todo => todo.id === id); // to find index of selected id
 
-  updateDoc(doc(db, "planned", id), {
+  updateDoc(doc(plannedRef, id), {
     done: !todos.value[index].done
   });
 };

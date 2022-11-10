@@ -14,6 +14,7 @@ export const addPlanned = (text) => {
   addDoc(collection(db, "planned"), {
     content: text,
     done: false,
+    date: Date.now()
   });
 };
 export const deletePlanned = (id) => {
