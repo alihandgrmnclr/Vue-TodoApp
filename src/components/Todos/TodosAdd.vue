@@ -1,19 +1,20 @@
 <script setup>
 import { ref } from 'vue';
 
-const todos = ref([]);
+const emits = defineEmits(["todo"])
 const todo = ref("");
 
-const addTodo = () =>{
-  todos.value.push(todo.value);
-};
+const addTodo = (Todo) => {
+  emits("todo",Todo)
+  todo.value = "";
+}
 
 </script>
 
 <template>
   <div class="addtodo">
     <input class="addtodo__input" v-model="todo" type="text" placeholder="Add todo...">
-    <button class="addtodo__button" @click="addTodo"> <img class="addtodo__icon" src="https://cdn-icons-png.flaticon.com/512/992/992651.png" alt=""> </button>
+    <button class="addtodo__button" @click="addTodo(todo)"> <img class="addtodo__icon" src="https://cdn-icons-png.flaticon.com/512/992/992651.png" alt=""> </button>
   </div>
 </template>
 <style lang="scss" scoped>
