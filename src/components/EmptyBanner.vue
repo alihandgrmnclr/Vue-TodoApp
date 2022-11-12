@@ -14,7 +14,7 @@
 <style lang="scss" scoped>
 
 .empty__banner{
-  @apply flex flex-col items-center justify-center;
+  @apply flex flex-col items-center justify-center mt-10 opacity-60;
 
   &__logo{
     @apply h-[30vh];

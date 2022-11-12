@@ -1,5 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import PlannedView from '../views/PlannedView.vue'
+import DailyView from '../views/DailyView.vue'
+import ImportantView from '../views/ImportantView.vue'
+import MarketView from '../views/MarketView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,17 +16,17 @@ const router = createRouter({
     {
       path: '/daily',
       name: 'daily',
-      component: () => import('../views/DailyView.vue')
+      component: DailyView
     },
     {
       path: '/market',
       name: 'market',
-      component: () => import('../views/MarketView.vue')
+      component: MarketView
     },
     {
       path: '/important',
       name: 'important',
-      component: () => import('../views/ImportantView.vue')
+      component: ImportantView
     },
   ]
 })
