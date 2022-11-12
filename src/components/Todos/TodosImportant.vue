@@ -55,6 +55,9 @@ const setDone = (id) => {
     </template>
   </Teleport>
   <div class="important">
+    <template v-if="todos.length < 1">
+      <EmptyBanner></EmptyBanner>
+    </template>
     <ul>
       <li class="important__list" :class="{ 'done': todo.done }" v-for="todo in todos">
         <p class="important__list__text"> {{ todo.content }} </p>

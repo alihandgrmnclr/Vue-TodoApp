@@ -4,6 +4,7 @@ import DeleteModal from "../DeleteModal.vue"
 import { db } from "../../firebase/config";
 import { collection, onSnapshot, updateDoc, doc, query, orderBy } from "firebase/firestore";
 import { deleteTodoList } from "../../utils/TodoUtils";
+import EmptyBanner from "../EmptyBanner.vue";
 
 const todos = ref([]);
 const showAlert = ref(false);
@@ -55,6 +56,9 @@ const setDone = (id) => {
     </template>
   </Teleport>
   <div class="daily">
+    <template v-if="todos.length < 1">
+      <EmptyBanner></EmptyBanner>
+    </template>
     <ul>
       <li class="daily__list" :class="{ 'done': todo.done }" v-for="todo in todos">
         <p class="daily__list__text"> {{ todo.content }} </p>
