@@ -1,9 +1,10 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import DeleteModal from "../DeleteModal.vue"
-import { db } from "../../firebase/config";
 import { collection, onSnapshot, updateDoc, doc, query, orderBy } from "firebase/firestore";
+import { db } from "../../firebase/config";
 import { deleteTodoList } from "../../utils/TodoUtils";
+import DeleteModal from "../DeleteModal.vue"
+import EmptyBanner from "../EmptyBanner.vue";
 
 const todos = ref([]);
 const showAlert = ref(false);

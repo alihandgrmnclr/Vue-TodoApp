@@ -5,7 +5,7 @@
 <template>
 
   <div class="empty__banner">
-    <img class="empty__banner__logo" src="photos/todo.png" alt="">
+    <img class="empty__banner__logo" src="/photos/todo.png" alt="">
     <p class="empty__banner__text">Add your first todo!</p>
   </div>
 
