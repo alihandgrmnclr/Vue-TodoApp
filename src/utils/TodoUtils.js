@@ -1,22 +1,13 @@
 import { db } from "../firebase/config";
 import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
 
-export const addDaily = () => {};
-export const deleteDaily = () => {};
-
-export const addImportant = () => {};
-export const deleteImportant = () => {};
-
-export const addMarket = () => {};
-export const deleteMarket = () => {};
-
-export const addPlanned = (text) => {
-  addDoc(collection(db, "planned"), {
+export const addTodoList = (list,text) => {
+  addDoc(collection(db, list), {
     content: text,
     done: false,
     date: Date.now()
   });
 };
-export const deletePlanned = (id) => {
-  deleteDoc(doc(db, "planned", id));
+export const deleteTodoList = (list,id) => {
+  deleteDoc(doc(db, list, id));
 };

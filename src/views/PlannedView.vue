@@ -1,12 +1,13 @@
 <script setup>
 import TodosAdd from '../components/Todos/TodosAdd.vue';
 import TodosPlanned from '../components/Todos/TodosPlanned.vue';
-import { addPlanned } from "../utils/TodoUtils"
+import { addTodoList } from "../utils/TodoUtils"
 
 
 const todoHandler = (content) => {
-  if (content.length <1) return alert("Invalid input");
-  addPlanned(content);
+  let text = content.trim();
+  if (text.length <1 || text == "") return alert("Invalid input");
+  addTodoList("planned",content);
 }
 
 </script>

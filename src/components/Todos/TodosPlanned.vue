@@ -3,7 +3,7 @@ import { onMounted, ref } from "vue";
 import DeleteModal from "../DeleteModal.vue"
 import { db } from "../../firebase/config";
 import { collection, onSnapshot, updateDoc, doc, query, orderBy } from "firebase/firestore";
-import { deletePlanned } from "../../utils/TodoUtils";
+import { deleteTodoList } from "../../utils/TodoUtils";
 
 const todos = ref([]);
 const showAlert = ref(false);
@@ -34,15 +34,13 @@ const deleteModalOpen = (id) => {
 
 const alertHandler = (status) => {
   if (!status) return showAlert.value = false;
-  deletePlanned(showAlertID.value);
+  deleteTodoList("planned", showAlertID.value);
   showAlertID.value = null;
   showAlert.value = false;
 };
 
 const setDone = (id) => {
-
-const index = todos.value.findIndex(todo => todo.id === id); // to find index of selected id
-
+  const index = todos.value.findIndex(todo => todo.id === id); // to find index of selected id
   updateDoc(doc(plannedRef, id), {
     done: !todos.value[index].done
   });
