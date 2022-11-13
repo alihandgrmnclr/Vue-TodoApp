@@ -8,6 +8,7 @@ const router = useRouter();
 
 const email = ref("");
 const password = ref("");
+const error = ref();
 
 const signupHandler = (e) => {
   e.preventDefault();
@@ -16,7 +17,7 @@ const signupHandler = (e) => {
     alert("successfully registered");
     router.push("/planned")
   })
-  .catch((err) => console.log("error",err))
+  .catch((err) => error.value = err)
 };
 
 const goToLogin = () => {
@@ -25,6 +26,10 @@ const goToLogin = () => {
 
 const isValidEmail = computed(() => {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value);
+});
+
+const isvalidPassword = computed(() => {
+  return /^[A-Za-z0-9]\w{5,}$/.test(password.value);
 });
 
 </script>
@@ -41,7 +46,17 @@ const isValidEmail = computed(() => {
       </div>
     </template>
     <input type="password" v-model="password" placeholder="password">
+    <template v-if="!isvalidPassword && password.length>0">
+      <div class="errmsg">
+        <p>Min 6 characters</p>
+      </div>
+    </template>
     <ButtonComp :isValid="isValidEmail" text="Register"></ButtonComp>
+    <template v-if="error">
+      <div class="errmsg">
+        {{ error }}
+      </div>
+    </template>
     <p>Do you have an accout? <span @click="goToLogin" class="login__link">Login</span></p>
   </form>
 </div>
@@ -53,8 +68,12 @@ const isValidEmail = computed(() => {
 .signup {
   @apply flex flex-col justify-center items-center h-[400px];
   
+  h1{
+    @apply mb-5;
+  }
+
   input{
-    @apply outline-none w-full;
+    @apply outline-none w-full p-3 rounded-full;
   }
 
   form {
@@ -64,7 +83,7 @@ const isValidEmail = computed(() => {
     @apply underline font-bold cursor-pointer text-blue-500 hover:text-blue-700
   }
   .errmsg{
-    @apply flex w-full text-red-500 text-sm;
+    @apply flex w-full text-red-500 text-sm ml-5;
   }
 }
 

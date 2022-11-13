@@ -56,12 +56,12 @@ const isValidEmail = computed(() => {
       <input type="email" v-model="email" placeholder="email">
       <template v-if="!isValidEmail && email.length > 0">
         <div class="errmsg">
-          <p>Please enter a valid email</p>
+          <p >Please enter a valid email</p>
         </div>
       </template>
       <input type="password" v-model="password" placeholder="password">
       <template v-if="errMsg">
-        <p>{{ errMsg }}</p>
+        <p class="errmsg">{{ errMsg }}</p>
       </template>
       <ButtonComp :isValid="isValidEmail" text="Login"></ButtonComp>
       <p>Don't you have an accout? <span @click="goToRegister" class="register__link">Register</span></p>
@@ -74,8 +74,12 @@ const isValidEmail = computed(() => {
 .login {
   @apply flex flex-col justify-center items-center h-[400px];
 
+  h1{
+    @apply mb-5;
+  }
+
   input {
-    @apply outline-none w-full;
+    @apply outline-none w-full p-3 rounded-full;
   }
 
   form {
@@ -87,7 +91,7 @@ const isValidEmail = computed(() => {
   }
 
   .errmsg {
-    @apply flex w-full text-red-500 text-sm;
+    @apply flex w-full text-red-500 text-sm ml-5;
   }
 }
 </style>

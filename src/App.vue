@@ -50,10 +50,10 @@ const getCurrentUser = () => {
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <template v-if="isLoggedIn">
-          <RouterLink to="/planned">Planned</RouterLink>
-          <RouterLink to="/important">Important</RouterLink>
-          <RouterLink to="/market">Market</RouterLink>
-          <RouterLink to="/daily">Daily</RouterLink>
+          |<RouterLink to="/planned">Planned</RouterLink>|
+          <RouterLink to="/important">Important</RouterLink>|
+          <RouterLink to="/market">Market</RouterLink>|
+          <RouterLink to="/daily">Daily</RouterLink>|
         </template>
           <div class="user">
             <template v-if="!isLoggedIn">
@@ -74,12 +74,12 @@ const getCurrentUser = () => {
 <style lang="scss" scoped>
 .navbar {
   .navs {
-    @apply flex justify-center items-center w-[100vw] h-[10vh];
+    @apply flex justify-center items-center w-full h-[10vh];
     @apply min-h-[50px];
 
 
     nav {
-      @apply flex font-medium text-[14px] gap-4;
+      @apply flex font-medium text-[14px] gap-1;
       @apply sm:gap-8 sm:text-[18px];
     }
 
@@ -89,8 +89,10 @@ const getCurrentUser = () => {
     }
 
     .user {
-      @apply flex gap-4 fixed right-0 mr-5;
+      @apply flex gap-4 fixed right-0 mr-2 mt-6;
     }
   }
 }
+
+
 </style>
