@@ -1,13 +1,12 @@
 <script setup>
-import RegisterView from './RegisterView.vue';
-import LoginView from './LoginView.vue';
+import Welcome from '../components/Welcome.vue';
+
 
 </script>
 
 <template>
 
-<RegisterView></RegisterView>
-<LoginView></LoginView>
+  <Welcome></Welcome>
 
 </template>
 

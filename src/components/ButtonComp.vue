@@ -1,30 +1,19 @@
 <script setup>
 
-const emits = defineEmits(["setStatus"]);
-
-const buttonHandler = (status) => {
-  emits("setStatus",status)
-};
+const props = defineProps(["text","isValid"])
 
 </script>
 
 <template>
-  <div class="buttons">
-    <button class="accept" @click="buttonHandler(true)"> <p>Accept</p> </button>
-    <button class="decline" @click="buttonHandler(false)"> <p>Decline</p> </button>
+  <div class="buttoncomp">
+      <button :disabled="!props.isValid">{{ text }}</button>
   </div>
-
 </template>
 
 <style scoped>
-.buttons {
-  @apply flex justify-center gap-3  text-white;
-}
-.accept {
-  @apply bg-green-600 rounded-lg w-[75px] h-10;
-}
+  button{
+    @apply flex justify-center items-center bg-blue-800 w-24 h-12 rounded-md text-white;
+    @apply hover:bg-blue-900;
 
-.decline{
-  @apply bg-red-600 rounded-lg w-[75px] h-10;
-}
+  }
 </style>

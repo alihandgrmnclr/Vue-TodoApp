@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
+import ButtonComp from '../components/ButtonComp.vue';
 
 const router = useRouter();
 
@@ -10,7 +11,6 @@ const password = ref("");
 
 const signupHandler = (e) => {
   e.preventDefault();
-  console.log("signup");
   createUserWithEmailAndPassword(getAuth(), email.value, password.value)
   .then((data) => {
     alert("successfully registered");
@@ -19,6 +19,14 @@ const signupHandler = (e) => {
   .catch((err) => console.log("error",err))
 };
 
+const goToLogin = () => {
+  router.push("/login");
+};
+
+const isValidEmail = computed(() => {
+  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value);
+});
+
 </script>
 
 <template>
@@ -26,9 +34,15 @@ const signupHandler = (e) => {
 <div class="signup">
   <h1>Create an account</h1>
   <form @submit="signupHandler">
-    <input type="email" v-model="email">
-    <input type="password" v-model="password">
-    <button>SignUp</button>
+    <input type="email" v-model="email" placeholder="email">
+    <template v-if="!isValidEmail && email.length>0">
+      <div class="errmsg">
+        <p>Please enter a valid email</p>
+      </div>
+    </template>
+    <input type="password" v-model="password" placeholder="password">
+    <ButtonComp :isValid="isValidEmail" text="Register"></ButtonComp>
+    <p>Do you have an accout? <span @click="goToLogin" class="login__link">Login</span></p>
   </form>
 </div>
 
@@ -38,10 +52,20 @@ const signupHandler = (e) => {
 
 .signup {
   @apply flex flex-col justify-center items-center h-[400px];
-  form{
-    @apply flex flex-col w-[300px] gap-3;
-  }
   
+  input{
+    @apply outline-none w-full;
+  }
+
+  form {
+    @apply flex flex-col justify-center items-center w-[300px] gap-3;
+  }
+  .login__link{
+    @apply underline font-bold cursor-pointer text-blue-500 hover:text-blue-700
+  }
+  .errmsg{
+    @apply flex w-full text-red-500 text-sm;
+  }
 }
 
 </style>

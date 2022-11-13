@@ -1,5 +1,5 @@
 <script setup>
-import ButtonComp from "./ButtonComp.vue"
+import AlertButtonComp from "./AlertButtonComp.vue"
 
 const emits = defineEmits(["setStatus"])
 
@@ -14,7 +14,7 @@ const handleStatus = (status) => {
     <div class="delete__modal">
       <p class="delete__modal__text">Are you sure you want to delete this ?</p>
       <div class="delete__modal__btns">
-        <ButtonComp @setStatus="handleStatus"></ButtonComp>
+        <AlertButtonComp @setStatus="handleStatus"></AlertButtonComp>
       </div>
     </div>
   </div>
