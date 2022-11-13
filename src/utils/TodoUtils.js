@@ -5,7 +5,7 @@ export const addTodoList = (list,text) => {
   addDoc(collection(db, list), {
     content: text,
     done: false,
-    date: Date.now()
+    date: Date.now(),
   });
 };
 export const deleteTodoList = (list,id) => {

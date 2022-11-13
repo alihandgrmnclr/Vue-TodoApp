@@ -61,7 +61,7 @@ const setDone = (id) => {
     </template>
     <ul>
       <li class="planned__list" :class="{ 'done': todo.done }" v-for="todo in todos">
-        <p class="planned__list__text"> {{ todo.content }} </p>
+        <p class="planned__list__text"> {{ todo.content }}</p>
         <div class="planned__btn">
           <div @click="setDone(todo.id)" class="planned__btn__done"><img class="icon"
               src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>

@@ -14,7 +14,14 @@ const addTodo = (Todo) => {
 <template>
   <div class="addtodo">
     <input class="addtodo__input" v-model="todo" type="text" placeholder="Add todo...">
-    <button class="addtodo__button" @click="addTodo(todo)"> <img class="addtodo__icon" src="https://cdn-icons-png.flaticon.com/512/992/992651.png" alt=""> </button>
+    <button
+      class="addtodo__button"
+      @click="addTodo(todo)"
+      :disabled="!todo">
+      <img
+      class="addtodo__icon"
+      src="https://cdn-icons-png.flaticon.com/512/992/992651.png">
+      </button>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -35,6 +42,8 @@ const addTodo = (Todo) => {
     @apply w-5 ;
     @apply hover:scale-110;
   }
+
+  
 }
 
 </style>
