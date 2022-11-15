@@ -1,21 +1,20 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useRouter, RouterLink, RouterView } from 'vue-router'
-import { getAuth, onAuthStateChanged, signOut } from '@firebase/auth';
-
-const isLoggedIn = ref(false)
+import { useAuthStore } from './stores/use-auth';
 
 const router = useRouter();
-let auth;
+const authStore = useAuthStore()
 
 onMounted(() => {
-  auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) return isLoggedIn.value = true;
-    isLoggedIn.value = false;
-  });
+  authStore.checkUserChange();
 });
 
+// const getCurrentUser = () => {
+//    onAuthStateChanged(auth,(user) => {
+//     username.value = user.email;
+//    });
+// };
 
 const loginHandler = () => {
   console.log("entered");
@@ -23,24 +22,11 @@ const loginHandler = () => {
 };
 
 const signOutHandler = () => {
-  signOut(auth);
-  alert("Successfully signed out")
-  isLoggedIn.value = false;
+  authStore.userSignOut();
+  alert("Successfully signed out");
   router.push("/");
 };
 
-const getCurrentUser = () => {
-  return new Promise((resolve, reject) => {
-    const removeListener = onAuthStateChanged(
-      getAuth(),
-      (user) => {
-        removeListener();
-        resolve(user);
-      },
-      reject
-    );
-  });
-};
 
 </script>
 
@@ -49,22 +35,21 @@ const getCurrentUser = () => {
     <div class="navs">
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <template v-if="isLoggedIn">
+        <template v-if="authStore.isLoggedIn">
           |<RouterLink to="/planned">Planned</RouterLink>|
           <RouterLink to="/important">Important</RouterLink>|
           <RouterLink to="/market">Market</RouterLink>|
-          <RouterLink to="/daily">Daily</RouterLink>|
+          <RouterLink to="/daily">Daily</RouterLink>
         </template>
           <div class="user">
-            <template v-if="!isLoggedIn">
-              <RouterLink to="/login" @login="loginHandler">Login</RouterLink>
+            <template v-if="!authStore.isLoggedIn">
+              <RouterLink to="/login" @login="loginHandler">Login</RouterLink>|
               <RouterLink to="/register">Register</RouterLink>
             </template>
             <template v-else>
               <button @click="signOutHandler">Logout</button>
             </template>
           </div>
-        
       </nav>
     </div>
   </div>
@@ -89,7 +74,7 @@ const getCurrentUser = () => {
     }
 
     .user {
-      @apply flex gap-4 fixed right-0 mr-2 mt-6;
+      @apply flex gap-4 fixed right-0 mt-6 bg-neutral-50 rounded-l-lg pl-3 py-1;
     }
   }
 }

@@ -61,7 +61,7 @@ const setDone = (id) => {
     </template>
     <ul>
       <li class="planned__list" :class="{ 'done': todo.done }" v-for="todo in todos">
-        <p class="planned__list__text"> {{ todo.content }}</p>
+        <input class="planned__list__text" :value="todo.content">
         <div class="planned__btn">
           <div @click="setDone(todo.id)" class="planned__btn__done"><img class="icon"
               src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>
@@ -85,11 +85,12 @@ const setDone = (id) => {
   }
 
   &__list__text {
-    @apply min-w-[80%] overflow-hidden;
+    @apply flex-1 overflow-hidden outline-none;
+    background-color: rgba(240, 248, 255, 0);
   }
 
   &__btn {
-    @apply flex ml-auto gap-2;
+    @apply flex ml-auto gap-2 px-5;
     @apply min-w-[60px];
 
     .icon {

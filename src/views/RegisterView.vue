@@ -1,21 +1,26 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from '@firebase/auth';
 import ButtonComp from '../components/ButtonComp.vue';
 
-const router = useRouter();
-
+const username = ref("");
 const email = ref("");
 const password = ref("");
 const error = ref();
 
+const router = useRouter();
+const auth = getAuth();
+
 const signupHandler = (e) => {
   e.preventDefault();
   createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-  .then((data) => {
+  .then((res) => {
+    updateProfile(auth.currentUser, {
+      displayName: username.value
+    })
     alert("successfully registered");
-    router.push("/planned")
+    router.push("/")
   })
   .catch((err) => error.value = err)
 };
@@ -24,11 +29,15 @@ const goToLogin = () => {
   router.push("/login");
 };
 
+const isValidUsername = computed(() => {
+  return /^[A-Za-z0-9]\w{5,}$/.test(username.value);
+});
+
 const isValidEmail = computed(() => {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value);
 });
 
-const isvalidPassword = computed(() => {
+const isValidPassword = computed(() => {
   return /^[A-Za-z0-9]\w{5,}$/.test(password.value);
 });
 
@@ -39,6 +48,12 @@ const isvalidPassword = computed(() => {
 <div class="signup">
   <h1>Create an account</h1>
   <form @submit="signupHandler">
+    <input type="text" v-model="username" placeholder="username">
+    <template v-if="!isValidUsername && username.length>0">
+      <div class="errmsg">
+        <p>Min 6 characters</p>
+      </div>
+    </template>
     <input type="email" v-model="email" placeholder="email">
     <template v-if="!isValidEmail && email.length>0">
       <div class="errmsg">
@@ -46,7 +61,7 @@ const isvalidPassword = computed(() => {
       </div>
     </template>
     <input type="password" v-model="password" placeholder="password">
-    <template v-if="!isvalidPassword && password.length>0">
+    <template v-if="!isValidPassword && password.length>0">
       <div class="errmsg">
         <p>Min 6 characters</p>
       </div>
