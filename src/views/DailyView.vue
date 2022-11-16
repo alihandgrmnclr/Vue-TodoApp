@@ -1,12 +1,14 @@
 <script setup>
 import TodosAdd from '../components/Todos/TodosAdd.vue';
 import TodosDaily from '../components/Todos/TodosDaily.vue';
-import { addTodoList } from "../utils/TodoUtils"
+import { useTodoStore } from '../stores/use-todo';
+
+const todoStore = useTodoStore();
 
 const todoHandler = (content) => {
   let text = content.trim();
   if (text.length <1 || text == "") return alert("Invalid input");
-  addTodoList("daily",content);
+  todoStore.addTodoList("daily",content);
 }
 
 </script>

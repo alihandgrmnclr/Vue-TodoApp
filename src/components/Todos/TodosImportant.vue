@@ -2,7 +2,8 @@
 import { onMounted, ref } from "vue";
 import { collection, onSnapshot, updateDoc, doc, query, orderBy } from "firebase/firestore";
 import { db } from "../../firebase/config";
-import { deleteTodoList } from "../../utils/TodoUtils";
+// import { deleteTodoList } from "../../utils/TodoUtils";
+import { useTodoStore } from "../../stores/use-todo";
 import DeleteModal from "../DeleteModal.vue"
 import EmptyBanner from "../EmptyBanner.vue";
 
@@ -10,6 +11,7 @@ const todos = ref([]);
 const showAlert = ref(false);
 const showAlertID = ref(null);
 
+const todoStore = useTodoStore();
 const importantRef = collection(db, "important")
 const todoSortedRef = query(importantRef, orderBy("date", "desc"));
 
@@ -35,7 +37,7 @@ const deleteModalOpen = (id) => {
 
 const alertHandler = (status) => {
   if (!status) return showAlert.value = false;
-  deleteTodoList("important", showAlertID.value);
+  todoStore.deleteTodoList("important", showAlertID.value);
   showAlertID.value = null;
   showAlert.value = false;
 };
