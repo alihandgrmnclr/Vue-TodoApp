@@ -1,12 +1,11 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import { collection, onSnapshot, updateDoc, doc, query, orderBy } from "firebase/firestore";
+import { onBeforeMount, ref } from "vue";
+import { collection, query, orderBy } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useTodoStore } from "../../stores/use-todo";
 import DeleteModal from "../DeleteModal.vue"
 import EmptyBanner from "../EmptyBanner.vue";
 
-const todos = ref([]);
 const showAlert = ref(false);
 const showAlertID = ref(null);
 
@@ -14,19 +13,8 @@ const todoStore = useTodoStore();
 const marketRef = collection(db, "market")
 const todoSortedRef = query(marketRef, orderBy("date", "desc"));
 
-onMounted(() => {
-  onSnapshot(todoSortedRef, (querySnapshot) => {
-    const fbTodos = [];
-    querySnapshot.forEach((doc) => {
-      const todo = {
-        id: doc.id,
-        content: doc.data().content,
-        done: doc.data().done,
-      }
-      fbTodos.push(todo);
-    });
-    todos.value = fbTodos;
-  });
+onBeforeMount(async () => {
+  todoStore.loadTodos(todoSortedRef);
 });
 
 const deleteModalOpen = (id) => {
@@ -42,10 +30,7 @@ const alertHandler = (status) => {
 };
 
 const setDone = (id) => {
-  const index = todos.value.findIndex(todo => todo.id === id); // to find index of selected id
-  updateDoc(doc(marketRef, id), {
-    done: !todos.value[index].done
-  });
+  todoStore.setTodoDone(id, marketRef)
 };
 
 </script>
@@ -57,11 +42,11 @@ const setDone = (id) => {
     </template>
   </Teleport>
   <div class="market">
-    <template v-if="todos.length < 1">
+    <template v-if="!todoStore.todos">
       <EmptyBanner></EmptyBanner>
     </template>
     <ul>
-      <li class="market__list" :class="{ 'done': todo.done }" v-for="todo in todos">
+      <li class="market__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.todos">
         <p class="market__list__text"> {{ todo.content }} </p>
         <div class="market__btn">
           <div @click="setDone(todo.id)" class="market__btn__done"><img class="icon"

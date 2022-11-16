@@ -1,7 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 import ButtonComp from '../components/ButtonComp.vue';
 import { useAuthStore } from '../stores/use-auth';
 
@@ -16,32 +15,10 @@ const router = useRouter();
 
 const loginHandler = async (e) => {
   e.preventDefault();
-  // signInWithEmailAndPassword(getAuth(), email.value, password.value)
-  //   .then((data) => {
-  //     alert("successfully logged in");
-  //     emits("login",true)
-  //     router.push("/planned")
-  //   })
-  //   .catch((err) => {
-  //     switch (err.code) {
-  //       case "auth/invalid-email":
-  //         errMsg.value = "Invalid email"
-  //         break;
-  //       case "auth/wrong-password":
-  //         errMsg.value = "Incorrect password"
-  //         break;
-  //       case "auth/user-not-found":
-  //         errMsg.value = "No account found with that email"
-  //         break;
-  //       default:
-  //         errMsg.value = "Invalid email or password";
-  //         break;
-  //     }
-  //   })
   await authStore.loginHandler(email.value, password.value);
   if(!authStore.isLoggedIn) return; 
   emits("login", true);
-  router.push("/planned");
+  router.push("/");
 };
 
 const goToRegister = () => {

@@ -16,7 +16,7 @@ h1 {
 }
 
 .welcome {
-  @apply flex flex-col justify-center items-center min-h-[80vh];
+  @apply flex flex-col justify-center items-center min-h-[20vh];
   
 }
 </style>

@@ -1,23 +1,18 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onBeforeMount } from 'vue';
 import { useRouter, RouterLink, RouterView } from 'vue-router'
 import { useAuthStore } from './stores/use-auth';
 
 const router = useRouter();
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 
-onMounted(() => {
-  authStore.checkUserChange();
+onBeforeMount(() => {
+  authStore.getCurrentUser();
 });
 
-// const getCurrentUser = () => {
-//    onAuthStateChanged(auth,(user) => {
-//     username.value = user.email;
-//    });
-// };
 
 const loginHandler = () => {
-  console.log("entered");
+  alert("Successfully logged in");
   login.value = true;
 };
 
