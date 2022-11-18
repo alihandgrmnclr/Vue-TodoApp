@@ -15,7 +15,7 @@ const todoStore = useTodoStore();
       <p>User mail:  {{ authStore.userInfo.email }}</p>
       <p>Your email is <strong>{{ authStore.userInfo.emailVerified ? "verified" : "not verified"}}</strong></p>
       <p>Your Todos</p>
-      <!-- <p>{{ todoStore. }}</p> -->
+      <!-- <p>{{ todoStore }}</p> -->
     </div>
   </template>
 

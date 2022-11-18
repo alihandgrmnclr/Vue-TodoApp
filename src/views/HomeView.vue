@@ -2,7 +2,6 @@
 import Welcome from '../components/Welcome.vue';
 import UserDetails from "../components/UserDetails.vue"
 
-
 </script>
 
 <template>

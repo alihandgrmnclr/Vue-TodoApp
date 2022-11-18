@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import ButtonComp from '../components/ButtonComp.vue';
 import { useAuthStore } from '../stores/use-auth';
+import { useRegexpStore } from '../stores/use-regexp';
 
 const emits = defineEmits(["login"]);
 
@@ -11,12 +12,13 @@ const password = ref("");
 const errMsg = ref();
 
 const authStore = useAuthStore();
+const regexpStore = useRegexpStore();
 const router = useRouter();
 
 const loginHandler = async (e) => {
   e.preventDefault();
   await authStore.loginHandler(email.value, password.value);
-  if(!authStore.isLoggedIn) return; 
+  if(!authStore.isLoggedIn) return errMsg.value = authStore.errMsg; 
   emits("login", true);
   router.push("/");
 };
@@ -26,7 +28,11 @@ const goToRegister = () => {
 };
 
 const isValidEmail = computed(() => {
-  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value);
+  return regexpStore.checkEmail(email.value);
+});
+
+const isValidPassword = computed(() => {
+  return regexpStore.checkPassword(password.value);
 });
 
 </script>
@@ -39,14 +45,19 @@ const isValidEmail = computed(() => {
       <input type="email" v-model="email" placeholder="email">
       <template v-if="!isValidEmail && email.length > 0">
         <div class="errmsg">
-          <p >Please enter a valid email</p>
+          <p>Please enter a valid email</p>
         </div>
       </template>
       <input type="password" v-model="password" placeholder="password">
-      <template v-if="errMsg">
-        <p class="errmsg">{{ errMsg }}</p>
+      <template v-if="!isValidPassword && password.length > 0 ">
+        <div class="errmsg">
+          <p>Min 6 characters</p>
+        </div>
       </template>
-      <ButtonComp :isValid="isValidEmail" text="Login"></ButtonComp>
+      <ButtonComp :isValid="isValidEmail && isValidPassword" text="Login" width="120px" height="40px"></ButtonComp>
+      <template v-if="errMsg">
+        <p class="errmsg justify-center mr-5">{{ errMsg }}</p>
+      </template>
       <p>Don't you have an accout? <span @click="goToRegister" class="register__link">Register</span></p>
     </form>
   </div>

@@ -27,7 +27,7 @@ const addTodo = (Todo) => {
 <style lang="scss" scoped>
 
 .addtodo{
-  @apply flex justify-center items-center w-[80%] bg-white h-10 rounded-lg;
+  @apply flex justify-center items-center w-[80%] bg-white h-10 rounded-lg z-[1];
   @apply max-w-[600px];
 
   &__input{

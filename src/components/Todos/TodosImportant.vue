@@ -42,7 +42,7 @@ const setDone = (id) => {
     </template>
   </Teleport>
   <div class="important">
-    <template v-if="!todoStore.todos">
+    <template v-if="!todoStore.todos || todoStore.todos.length < 1">
       <EmptyBanner></EmptyBanner>
     </template>
     <ul>

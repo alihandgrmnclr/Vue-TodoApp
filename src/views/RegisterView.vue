@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from '@firebase/auth';
+import { useRegexpStore } from '../stores/use-regexp';
 import ButtonComp from '../components/ButtonComp.vue';
 
 const username = ref("");
@@ -9,14 +10,15 @@ const email = ref("");
 const password = ref("");
 const error = ref();
 
+const regexpStore = useRegexpStore();
 const router = useRouter();
 const auth = getAuth();
 
 const signupHandler = (e) => {
   e.preventDefault();
   createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-  .then((res) => {
-    updateProfile(auth.currentUser, {
+  .then(async (res) => {
+    await updateProfile(auth.currentUser, {
       displayName: username.value
     })
     alert("successfully registered");
@@ -30,15 +32,15 @@ const goToLogin = () => {
 };
 
 const isValidUsername = computed(() => {
-  return /^[A-Za-z0-9]\w{5,}$/.test(username.value);
+  return regexpStore.checkUsername(username.value);
 });
 
 const isValidEmail = computed(() => {
-  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value);
+  return regexpStore.checkEmail(email.value);
 });
 
 const isValidPassword = computed(() => {
-  return /^[A-Za-z0-9]\w{5,}$/.test(password.value);
+  return regexpStore.checkPassword(password.value);
 });
 
 </script>
@@ -66,7 +68,7 @@ const isValidPassword = computed(() => {
         <p>Min 6 characters</p>
       </div>
     </template>
-    <ButtonComp :isValid="isValidEmail" text="Register"></ButtonComp>
+    <ButtonComp :isValid="isValidEmail" text="Register" width="120px" height="40px"></ButtonComp>
     <template v-if="error">
       <div class="errmsg">
         {{ error }}
