@@ -15,7 +15,6 @@ onBeforeMount(() => {
 <template>
 
   <NavbarComp></NavbarComp>
-
 </template>
 
 <style lang="scss" scoped>

@@ -1,9 +1,9 @@
 <script setup>
 import { useAuthStore } from '../stores/use-auth';
-import { useTodoStore } from '../stores/use-todo';
 
 const authStore = useAuthStore();
-const todoStore = useTodoStore();
+
+
 
 </script>
 
@@ -14,8 +14,6 @@ const todoStore = useTodoStore();
       <p>Username:  {{ authStore.userInfo.displayName }}</p>
       <p>User mail:  {{ authStore.userInfo.email }}</p>
       <p>Your email is <strong>{{ authStore.userInfo.emailVerified ? "verified" : "not verified"}}</strong></p>
-      <p>Your Todos</p>
-      <!-- <p>{{ todoStore }}</p> -->
     </div>
   </template>
 

@@ -12,7 +12,7 @@ const firebaseConfig = {
 };
 
 const fb = initializeApp(firebaseConfig);
-const auth = getAuth(fb);
+const auth = getAuth();
 const db = getFirestore(fb);
 
 export { db, firebaseConfig, auth };
