@@ -1,5 +1,5 @@
 <script setup>
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { useAuthStore } from "../stores/use-auth"
 import ButtonComp from './ButtonComp.vue';
 
@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // open
     const burger = document.querySelectorAll('.navbar-burger');
     const menu = document.querySelectorAll('.navbar-menu');
-
     if (burger.length && menu.length) {
         for (var i = 0; i < burger.length; i++) {
             burger[i].addEventListener('click', function() {
@@ -73,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
       </button>
     </div>
     <ul
-      class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
+      class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:items-center lg:w-auto lg:space-x-6">
       <li>
         <RouterLink class="navbar__route" to="/">User</RouterLink>
       </li>
@@ -110,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="navbar__log">
         <RouterLink to="/login" class="navbar__log__login" @login="loginHandler"><ButtonComp text="Login" :isValid="true" height="40px" width="100px"></ButtonComp></RouterLink>
         <RouterLink to="/register" class="navbar__log__register"><ButtonComp text="Register" :isValid="true" height="40px" width="100px"></ButtonComp></RouterLink>
-
       </div>
     </template>
     <template v-else>
@@ -121,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   <div class="navbar-menu relative z-10 hidden">
     <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
-    <nav class="z-50 fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
+    <nav class="z-50 fixed top-0 left-0 bottom-0 flex flex-col w-[80vw] max-w-sm p-3 bg-white border-r overflow-y-auto">
       <div class="flex items-center mb-8">
         <div class="navbar__logo mr-auto text-3xl font-bold leading-none ">
           <img class="navbar__logo" src="/photos/todo.png">
@@ -158,8 +156,8 @@ document.addEventListener('DOMContentLoaded', function() {
       <template v-if="!authStore.isLoggedIn">
         <div class="mt-auto">
          <div class="pt-6">
-            <a class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold  bg-gray-300 hover:bg-gray-400 rounded-xl">Sign In</a>
-            <a class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl">Sign Up</a>
+            <RouterLink to="/login" class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold  bg-gray-300 hover:bg-gray-400 rounded-xl">Login</RouterLink>
+            <RouterLink to="/register" class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl">Register</RouterLink>
           </div>
       </div>
       </template>
@@ -170,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <style lang="scss" scoped>
 .navbar {
-  @apply relative px-4 py-4 flex justify-between items-center bg-white mb-6;
+  @apply w-full relative px-4 py-4 flex justify-between items-center bg-white mb-6;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 
   &__logo{
@@ -182,8 +180,9 @@ document.addEventListener('DOMContentLoaded', function() {
     @apply hover:font-extrabold;
   }
   &__log{
+    @apply hidden sm:flex;
     .navbar__log__login, .navbar__log__register, .navbar__log__logout {
-      @apply hidden lg:inline-block lg:ml-auto lg:mr-3
+      @apply hidden lg:inline-block lg:ml-auto lg:mr-3;
     }
   }
 }
