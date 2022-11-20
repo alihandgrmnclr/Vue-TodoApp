@@ -33,6 +33,10 @@ const setDone = (id) => {
   todoStore.setTodoDone(id, marketRef)
 };
 
+const editTodo = (id,todo) => {
+  todoStore.editTodo(id, marketRef, todo);
+};
+
 </script>
 
 <template>
@@ -46,9 +50,11 @@ const setDone = (id) => {
       <EmptyBanner></EmptyBanner>
     </template>
     <ul>
-      <li class="market__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.todos">
-        <p class="market__list__text"> {{ todo.content }} </p>
+      <li class="market__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.todos" :key="todo.id">
+        <input class="market__list__text" v-model="todo.content">
         <div class="market__btn">
+          <div @click="editTodo(todo.id, todo.content)" class="market__btn__delete"><img class="icon"
+              src="https://cdn-icons-png.flaticon.com/512/4476/4476194.png" alt=""></div>
           <div @click="setDone(todo.id)" class="market__btn__done"><img class="icon"
               src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>
           <div @click="deleteModalOpen(todo.id)" class="market__btn__delete"><img class="icon"
@@ -71,7 +77,8 @@ const setDone = (id) => {
   }
 
   &__list__text {
-    @apply min-w-[80%] overflow-hidden;
+    @apply flex-1 overflow-hidden outline-none;
+    background-color: rgba(240, 248, 255, 0);
   }
 
   &__btn {

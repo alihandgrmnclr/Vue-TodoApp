@@ -70,17 +70,6 @@ const editTodo = (id,todo) => {
 
 <style lang="scss" scoped>
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: black;
-  opacity: 1; /* Firefox */
-}
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: black;
-}
-::-ms-input-placeholder { /* Microsoft Edge */
-  color: black;
-}
-
 .planned {
   @apply w-[50%];
   @apply min-w-[350px] min-h-[50px];
