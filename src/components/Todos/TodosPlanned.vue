@@ -3,6 +3,7 @@ import { onBeforeMount, onMounted, ref } from "vue";
 import { collection, query, orderBy } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useTodoStore } from "../../stores/use-todo";
+import { useSoundStore } from "../../stores/use-sound"
 import DeleteModal from "../DeleteModal.vue"
 import EmptyBanner from "../EmptyBanner.vue";
 
@@ -13,6 +14,8 @@ const showTodoList = ref(false);
 const todoStore = useTodoStore();
 const plannedRef = collection(db, "planned")
 const todoSortedRef = query(plannedRef, orderBy("date", "desc"));
+
+const soundStore = useSoundStore();
 
 onBeforeMount(async () => {
   todoStore.loadTodos(todoSortedRef);
@@ -30,17 +33,20 @@ const deleteModalOpen = (id) => {
 const alertHandler = (status) => {
   if (!status) return showAlert.value = false;
   todoStore.deleteTodoList("planned", showAlertID.value);
+  soundStore.deleteSound();
   showAlertID.value = null;
   showAlert.value = false;
 };
 
-const setDone = (id) => {
-  todoStore.setTodoDone(id, plannedRef)
+const setDone = (id,todo) => {
+  todoStore.setTodoDone(id, plannedRef);
+  if(!todo.done) return soundStore.doneSound();
 };
 
-const editTodo = (id,todo) => {
+const editTodo = (id) => {
   todoStore.editTodo(id, plannedRef, todo);
 };
+
 
 </script>
 
@@ -58,11 +64,12 @@ const editTodo = (id,todo) => {
       <template v-if="showTodoList">
         <TransitionGroup tag="ul" name="list" class="transition-group-style" appear>
           <li class="planned__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.todos" :key="todo.id">
+            <input type="radio" class="mr-3">
             <input class="planned__list__text" v-model="todo.content" @keyup.enter="editTodo(todo.id, todo.content)">
             <div class="planned__btn">
               <div @click="editTodo(todo.id, todo.content)" class="planned__btn__delete"><img class="icon"
                   src="https://cdn-icons-png.flaticon.com/512/4476/4476194.png" alt=""></div>
-              <div @click="setDone(todo.id)" class="planned__btn__done"><img class="icon"
+              <div @click="setDone(todo.id, todo)" class="planned__btn__done"><img class="icon"
                   src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>
               <div @click="deleteModalOpen(todo.id)" class="planned__btn__delete"><img class="icon"
                   src="https://cdn-icons-png.flaticon.com/512/5028/5028066.png" alt=""></div>
@@ -92,7 +99,7 @@ const editTodo = (id,todo) => {
   }
 
   &__btn {
-    @apply flex ml-auto gap-2 px-5;
+    @apply flex ml-auto gap-2;
     @apply min-w-[60px];
 
     .icon {

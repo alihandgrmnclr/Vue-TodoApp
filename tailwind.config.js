@@ -10,7 +10,6 @@ module.exports = {
         'bg-primary': '#CDFCF6',
         'text-primary': '#3C4048',
       }
-      
     },
   },
   plugins: [],

@@ -5,6 +5,7 @@ import { db } from "../../firebase/config";
 import { useTodoStore } from "../../stores/use-todo";
 import DeleteModal from "../DeleteModal.vue"
 import EmptyBanner from "../EmptyBanner.vue";
+import { useSoundStore } from "../../stores/use-sound";
 
 const showAlert = ref(false);
 const showAlertID = ref(null);
@@ -13,6 +14,8 @@ const showTodoList = ref(false);
 const todoStore = useTodoStore();
 const importantRef = collection(db, "important")
 const todoSortedRef = query(importantRef, orderBy("date", "desc"));
+
+const soundStore = useSoundStore();
 
 onBeforeMount(async () => {
   todoStore.loadTodos(todoSortedRef);
@@ -30,12 +33,14 @@ const deleteModalOpen = (id) => {
 const alertHandler = (status) => {
   if (!status) return showAlert.value = false;
   todoStore.deleteTodoList("important", showAlertID.value);
+  soundStore.deleteSound();
   showAlertID.value = null;
   showAlert.value = false;
 };
 
-const setDone = (id) => {
-  todoStore.setTodoDone(id, importantRef)
+const setDone = (id,todo) => {
+  todoStore.setTodoDone(id, importantRef);
+  if(!todo.done) return soundStore.doneSound();
 };
 
 const editTodo = (id, todo) => {
@@ -62,7 +67,7 @@ const editTodo = (id, todo) => {
             <div class="important__btn">
               <div @click="editTodo(todo.id, todo.content)" class="important__btn__delete"><img class="icon"
                   src="https://cdn-icons-png.flaticon.com/512/4476/4476194.png" alt=""></div>
-              <div @click="setDone(todo.id)" class="important__btn__done"><img class="icon"
+              <div @click="setDone(todo.id,todo)" class="important__btn__done"><img class="icon"
                   src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>
               <div @click="deleteModalOpen(todo.id)" class="important__btn__delete"><img class="icon"
                   src="https://cdn-icons-png.flaticon.com/512/5028/5028066.png" alt=""></div>

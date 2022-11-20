@@ -37,6 +37,9 @@ export const useTodoStore = defineStore("todo", {
     deleteTodoList(list, id) {
       deleteDoc(doc(db, list, id));
     },
+    deleteAllTodos() {
+
+    },
     setTodoDone(id, ref) {
       const index = this.todos.findIndex((todo) => todo.id === id); // to find index of selected id
       updateDoc(doc(ref, id), {
