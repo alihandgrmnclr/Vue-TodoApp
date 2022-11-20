@@ -1,10 +1,13 @@
 <script setup>
+import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { useAuthStore } from "../stores/use-auth"
 import ButtonComp from './ButtonComp.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
+
+const sideBarOpen = ref(false);
 
 const signOutHandler = () => {
   authStore.userSignOut();
@@ -17,13 +20,11 @@ const loginHandler = () => {
 };
 
 const openSideBar = () => {
-  const sidebar = document.querySelector(".navbar-menu");
-  sidebar.classList.remove("hidden")
+  sideBarOpen.value = true;
 };
 
 const hideSidebar = () => {
-  const sidebar = document.querySelector(".navbar-menu");
-  sidebar.classList.toggle("hidden");
+  sideBarOpen.value = false;
 };
 
 </script>
@@ -91,8 +92,10 @@ const hideSidebar = () => {
     </template>
 
   </nav>
-
-  <div class="navbar-menu relative z-10 hidden">
+  
+  <Transition :duration="{ enter: 100, leave: 100 }">
+  <template v-if="sideBarOpen">
+    <div class="navbar-menu relative z-10">
     <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25" @click="hideSidebar"></div>
     <nav class="z-50 fixed top-0 left-0 bottom-0 flex flex-col w-[80vw] max-w-sm p-3 bg-white border-r overflow-y-auto">
       <div class="flex items-center mb-8">
@@ -107,10 +110,10 @@ const hideSidebar = () => {
           </svg>
         </button>
       </div>
-      <div>
+        <div>
         <ul>
           <li class="mb-1">
-            <RouterLink to="/" class="navbar__mobile" @click="hideSidebar">User mobile</RouterLink>
+            <RouterLink to="/" class="navbar__mobile" @click="hideSidebar">User</RouterLink>
           </li>
           <template v-if="authStore.isLoggedIn">
             <li class="mb-1">
@@ -138,14 +141,18 @@ const hideSidebar = () => {
       </template>
     </nav>
   </div>
+</template>
+</Transition>
   <RouterView />
 </template>
 
 <style lang="scss" scoped>
+
+
+
 .navbar {
   @apply relative px-4 py-4 flex justify-between items-center bg-white mb-6;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-
 
   &__logo {
     @apply flex justify-center items-center text-lg h-10 cursor-pointer;

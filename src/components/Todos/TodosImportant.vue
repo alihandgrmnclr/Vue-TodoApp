@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 import { collection, query, orderBy } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useTodoStore } from "../../stores/use-todo";
@@ -8,6 +8,7 @@ import EmptyBanner from "../EmptyBanner.vue";
 
 const showAlert = ref(false);
 const showAlertID = ref(null);
+const showTodoList = ref(false);
 
 const todoStore = useTodoStore();
 const importantRef = collection(db, "important")
@@ -15,6 +16,10 @@ const todoSortedRef = query(importantRef, orderBy("date", "desc"));
 
 onBeforeMount(async () => {
   todoStore.loadTodos(todoSortedRef);
+});
+
+onMounted(() => {
+  showTodoList.value = true;
 });
 
 const deleteModalOpen = (id) => {
@@ -33,7 +38,7 @@ const setDone = (id) => {
   todoStore.setTodoDone(id, importantRef)
 };
 
-const editTodo = (id,todo) => {
+const editTodo = (id, todo) => {
   todoStore.editTodo(id, importantRef, todo);
 };
 
@@ -49,23 +54,28 @@ const editTodo = (id,todo) => {
     <template v-if="!todoStore.todos || todoStore.todos.length < 1">
       <EmptyBanner></EmptyBanner>
     </template>
-    <ul>
-      <li class="important__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.todos" :key="todo.id">
-        <input class="important__list__text" v-model="todo.content" @keyup.enter="editTodo(todo.id, todo.content)">
-        <div class="important__btn">
-          <div @click="editTodo(todo.id, todo.content)" class="important__btn__delete"><img class="icon"
-              src="https://cdn-icons-png.flaticon.com/512/4476/4476194.png" alt=""></div>
-          <div @click="setDone(todo.id)" class="important__btn__done"><img class="icon"
-              src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>
-          <div @click="deleteModalOpen(todo.id)" class="important__btn__delete"><img class="icon"
-              src="https://cdn-icons-png.flaticon.com/512/5028/5028066.png" alt=""></div>
-        </div>
-      </li>
-    </ul>
+    <Transition name="fade" class="transition-style" appear>
+      <template v-if="showTodoList">
+        <TransitionGroup tag="ul" name="list" class="transition-group-style" appear>
+          <li class="important__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.todos" :key="todo.id">
+            <input class="important__list__text" v-model="todo.content" @keyup.enter="editTodo(todo.id, todo.content)">
+            <div class="important__btn">
+              <div @click="editTodo(todo.id, todo.content)" class="important__btn__delete"><img class="icon"
+                  src="https://cdn-icons-png.flaticon.com/512/4476/4476194.png" alt=""></div>
+              <div @click="setDone(todo.id)" class="important__btn__done"><img class="icon"
+                  src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>
+              <div @click="deleteModalOpen(todo.id)" class="important__btn__delete"><img class="icon"
+                  src="https://cdn-icons-png.flaticon.com/512/5028/5028066.png" alt=""></div>
+            </div>
+          </li>
+        </TransitionGroup>
+      </template>
+    </Transition>
   </div>
 </template>
 
 <style lang="scss" scoped>
+
 .important {
   @apply w-[50%];
   @apply min-w-[350px] min-h-[50px];

@@ -7,8 +7,8 @@ const todoStore = useTodoStore();
 
 const todoHandler = (content) => {
   let text = content.trim();
-  if (text.length <1 || text == "") return alert("Invalid input");
-  todoStore.addTodoList("planned",content);
+  if (text.length < 1 || text == "") return alert("Invalid input");
+  todoStore.addTodoList("planned", content);
 }
 
 </script>
@@ -18,7 +18,6 @@ const todoHandler = (content) => {
     <TodosAdd @todo="todoHandler"></TodosAdd>
     <TodosPlanned></TodosPlanned>
   </div>
-
 </template>
 
 <style scoped>

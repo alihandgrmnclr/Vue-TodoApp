@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  @apply bg-bg-primary text-text-primary;
+
+  min-height: 100vh;
+  width: 100%;
+}
+
+@layer components {
+  .transition-style {
+    .fade-enter-from {
+      opacity: 0;
+    }
+    .fade-enter-to {
+      opacity: 1;
+    }
+    .fade-enter-active {
+      transition: all 1s ease;
+    }
+  }
+  .transition-group-style {
+    .list-enter-active{
+      transition: all 1s ease;
+
+    }
+    .list-leave-active {
+      transition: all 0s ease;
+    }
+    .list-enter-from,
+    .list-leave-to {
+      opacity: 0;
+    }
+    .list-leave-active {
+      position: absolute;
+      opacity: 0;
+    }
+  }
+}
