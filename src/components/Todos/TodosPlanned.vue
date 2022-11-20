@@ -33,6 +33,10 @@ const setDone = (id) => {
   todoStore.setTodoDone(id, plannedRef)
 };
 
+const editTodo = (id,todo) => {
+  todoStore.editTodo(id, plannedRef, todo);
+};
+
 </script>
 
 <template>
@@ -45,10 +49,15 @@ const setDone = (id) => {
     <template v-if="!todoStore.todos || todoStore.todos.length < 1">
       <EmptyBanner></EmptyBanner>
     </template>
+    <template>
+    
+    </template>
     <ul>
-      <li class="planned__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.todos">
-        <input class="planned__list__text" :value="todo.content">
+      <li class="planned__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.todos" :key="todo.id">
+        <input class="planned__list__text" v-model="todo.content" @keyup.enter="editTodo(todo.id, todo.content)">
         <div class="planned__btn">
+          <div @click="editTodo(todo.id, todo.content)" class="planned__btn__delete"><img class="icon"
+              src="https://cdn-icons-png.flaticon.com/512/4476/4476194.png" alt=""></div>
           <div @click="setDone(todo.id)" class="planned__btn__done"><img class="icon"
               src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>
           <div @click="deleteModalOpen(todo.id)" class="planned__btn__delete"><img class="icon"
@@ -60,6 +69,18 @@ const setDone = (id) => {
 </template>
 
 <style lang="scss" scoped>
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: black;
+  opacity: 1; /* Firefox */
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: black;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: black;
+}
+
 .planned {
   @apply w-[50%];
   @apply min-w-[350px] min-h-[50px];

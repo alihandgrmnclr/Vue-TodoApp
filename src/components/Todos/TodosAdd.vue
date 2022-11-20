@@ -13,7 +13,12 @@ const addTodo = (Todo) => {
 
 <template>
   <div class="addtodo">
-    <input class="addtodo__input" v-model="todo" type="text" placeholder="Add todo...">
+    <input
+      @keyup.enter="addTodo(todo)"
+      class="addtodo__input"
+      v-model="todo"
+      type="text"
+      placeholder="Add todo...">
     <button
       class="addtodo__button"
       @click="addTodo(todo)"

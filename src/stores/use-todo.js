@@ -1,13 +1,6 @@
 import { defineStore } from "pinia";
 import { db } from "../firebase/config";
-import {
-  collection,
-  onSnapshot,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  doc,
-} from "firebase/firestore";
+import {collection, onSnapshot, addDoc, deleteDoc, updateDoc, doc} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 export const useTodoStore = defineStore("todo", {
@@ -48,6 +41,11 @@ export const useTodoStore = defineStore("todo", {
       const index = this.todos.findIndex((todo) => todo.id === id); // to find index of selected id
       updateDoc(doc(ref, id), {
         done: !this.todos[index].done,
+      });
+    },
+    editTodo(id, ref, changedContent){
+      updateDoc(doc(ref, id), {
+        content: changedContent
       });
     },
   },
