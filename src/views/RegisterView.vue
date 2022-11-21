@@ -68,7 +68,7 @@ const isValidPassword = computed(() => {
         <p>Min 6 characters</p>
       </div>
     </template>
-    <ButtonComp :isValid="isValidEmail" text="Register" width="120px" height="40px"></ButtonComp>
+    <ButtonComp :isValid="isValidEmail && isValidPassword && isValidUsername" text="Register" width="120px" height="40px"></ButtonComp>
     <template v-if="error">
       <div class="errmsg">
         {{ error }}
