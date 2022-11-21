@@ -18,7 +18,7 @@ const buttonHandler = (status) => {
 
 <style scoped>
 .buttons {
-  @apply flex justify-center gap-3  text-white;
+  @apply flex justify-center gap-3 text-white;
 }
 .accept {
   @apply bg-green-600 rounded-lg w-[75px] h-10;

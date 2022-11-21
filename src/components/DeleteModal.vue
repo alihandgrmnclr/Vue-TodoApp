@@ -22,7 +22,7 @@ const handleStatus = (status) => {
 
 <style lang="scss" scoped>
 .delete {
-  @apply fixed inset-0 flex justify-center items-center w-full h-full;
+  @apply fixed inset-0 flex justify-center items-center w-full h-full z-30;
   background-color: rgba(0, 0, 0, 0.75);
 
   &__modal {

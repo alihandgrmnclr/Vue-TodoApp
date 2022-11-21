@@ -43,7 +43,7 @@ const setDone = (id,todo) => {
   if(!todo.done) return soundStore.doneSound();
 };
 
-const editTodo = (id) => {
+const editTodo = (id,todo) => {
   todoStore.editTodo(id, plannedRef, todo);
 };
 

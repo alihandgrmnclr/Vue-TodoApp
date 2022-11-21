@@ -19,7 +19,7 @@ const loginHandler = async (e) => {
   e.preventDefault();
   await authStore.loginHandler(email.value, password.value);
   if(!authStore.isLoggedIn) return errMsg.value = authStore.errMsg; 
-  emits("login", true);
+  emits("login");
   router.push("/");
 };
 
@@ -38,8 +38,6 @@ const isValidEmail = computed(() => {
 const isValidPassword = computed(() => {
   return regexpStore.checkPassword(password.value);
 });
-
-
 
 </script>
 

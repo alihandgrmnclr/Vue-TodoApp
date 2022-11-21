@@ -2,21 +2,21 @@
 import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { useAuthStore } from "../stores/use-auth"
+import AlertModal from './AlertModal.vue';
 import ButtonComp from './ButtonComp.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
 
+const alertModalText = ref("");
+const alertModalOpen = ref(false);
 const sideBarOpen = ref(false);
 
 const signOutHandler = () => {
   authStore.userSignOut();
-  alert("Successfully signed out");
-  router.push("/");
-};
-
-const loginHandler = () => {
-  alert("Successfully logged in");
+  alertModalText.value = "Successfully logged out";
+  alertModalOpen.value = true;
+  router.push("/login");
 };
 
 const openSideBar = () => {
@@ -27,9 +27,18 @@ const hideSidebar = () => {
   sideBarOpen.value = false;
 };
 
+const closeAlertModal = () => {
+  alertModalOpen.value = false;
+};
+
 </script>
 
 <template>
+  <Teleport to="#app">
+    <template v-if="alertModalOpen">
+      <AlertModal @close="closeAlertModal" :text="alertModalText"></AlertModal>
+    </template>
+  </Teleport>
   <nav class="navbar">
     <div class="navbar__logo" @click="router.push('/')">
       <img class="navbar__logo" src="/photos/todo.png">
@@ -78,7 +87,7 @@ const hideSidebar = () => {
 
     <template v-if="!authStore.isLoggedIn">
       <div class="navbar__log">
-        <RouterLink to="/login" class="navbar__log__login" @login="loginHandler">
+        <RouterLink to="/login" class="navbar__log__login">
           <ButtonComp text="Login" :isValid="true" height="40px" width="100px"></ButtonComp>
         </RouterLink>
         <RouterLink to="/register" class="navbar__log__register">

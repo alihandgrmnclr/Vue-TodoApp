@@ -15,14 +15,19 @@ const todoHandler = (content) => {
 
 <template>
   <div class="wrapper">
+    <h1>Important Todos</h1>
     <TodosAdd @todo="todoHandler"></TodosAdd>
     <TodosImportant></TodosImportant>
   </div>
 
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrapper {
   @apply flex flex-col justify-center items-center gap-4;
+
+  h1{
+    @apply text-lg;
+  }
 }
 </style>
