@@ -68,11 +68,13 @@ const router = createRouter({
 });
 
 
+
 router.beforeEach(async(to,from,next) => {
   const authStore = useAuthStore();
-  if (!authStore.isLoggedIn && to.name !== "login" && to.name !== "register" && to.name !=="home" && to.name !=="reset") next({ name: 'login' });
+  if (!authStore.isLoggedIn && to.name !== "login" && to.name !== "register" && to.name !=="home" && to.name !=="reset")  return next({name: "home"});
   next();
-
 })
+
+
 
 export default router

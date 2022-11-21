@@ -32,7 +32,7 @@ export const useAuthStore = defineStore("auth", {
         });
     },
     getCurrentUser() {
-      onAuthStateChanged(this.auth, (user) => {
+     onAuthStateChanged(this.auth, async(user) => {
         this.userInfo = this.auth.currentUser;
         if (user) return (this.isLoggedIn = true);
         this.isLoggedIn = false;

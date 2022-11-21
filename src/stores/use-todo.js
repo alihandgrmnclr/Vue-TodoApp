@@ -6,23 +6,36 @@ import { getAuth } from "firebase/auth";
 export const useTodoStore = defineStore("todo", {
   state: () => ({
     todos: null,
+    doneTodos: null,
     auth: getAuth(),
   }),
   actions: {
     async loadTodos(sortedRef) {
       onSnapshot(sortedRef, (querySnapshot) => {
         const fbTodos = [];
+        const fbDones = [];
         querySnapshot.forEach((doc) => {
           if ( doc._document.data.value.mapValue.fields.userId.stringValue === this.auth.currentUser.uid ) {
-            const todo = {
-              id: doc.id,
-              content: doc.data().content,
-              done: doc.data().done,
-            };
-            fbTodos.push(todo);
+            if (!doc.data().done) {
+              const todo = {
+                id: doc.id,
+                content: doc.data().content,
+                done: doc.data().done,
+              };
+              fbTodos.push(todo);
+            }
+            if(doc.data().done){
+              const doneTodos = {
+                id: doc.id,
+                content: doc.data().content,
+                done: doc.data().done,
+              };
+              fbDones.push(doneTodos);
+            }
           }
         });
         this.todos = fbTodos;
+        this.doneTodos = fbDones;
       });
     },
     addTodoList(list, text) {
@@ -44,6 +57,12 @@ export const useTodoStore = defineStore("todo", {
       const index = this.todos.findIndex((todo) => todo.id === id); // to find index of selected id
       updateDoc(doc(ref, id), {
         done: !this.todos[index].done,
+      });
+    },
+    setTodoUndone(id, ref) {
+      const index = this.doneTodos.findIndex((todo) => todo.id === id); // to find index of selected id
+      updateDoc(doc(ref, id), {
+        done: !this.doneTodos[index].done,
       });
     },
     editTodo(id, ref, changedContent){

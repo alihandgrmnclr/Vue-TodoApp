@@ -16,7 +16,7 @@ const authStore = useAuthStore();
     </div>
   </template>
   <div class="personal">
-    <h1>Connect with me</h1>
+    <h1>Contact with me</h1>
     <a href="https://www.linkedin.com/in/alihan-degirmenciler/" target="_blank">Linkedin</a>
     <a href="https://github.com/alihandgrmnclr" target="_blank">Github</a>
     

@@ -38,12 +38,16 @@ const alertHandler = (status) => {
   showAlert.value = false;
 };
 
-const setDone = (id,todo) => {
+const setDone = (id, todo) => {
   todoStore.setTodoDone(id, plannedRef);
-  if(!todo.done) return soundStore.doneSound();
+  return soundStore.doneSound();
 };
 
-const editTodo = (id,todo) => {
+const setUnDone = (id) => {
+  todoStore.setTodoUndone(id, plannedRef);
+};
+
+const editTodo = (id, todo) => {
   todoStore.editTodo(id, plannedRef, todo);
 };
 
@@ -60,7 +64,7 @@ const editTodo = (id,todo) => {
     <template v-if="!todoStore.todos || todoStore.todos.length < 1">
       <EmptyBanner></EmptyBanner>
     </template>
-    <Transition name="fade" class="transition-style" appear>
+    <!-- <TransitionGroup name="fade" class="transition-style" appear> -->
       <template v-if="showTodoList">
         <TransitionGroup tag="ul" name="list" class="transition-group-style" appear>
           <li class="planned__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.todos" :key="todo.id">
@@ -76,13 +80,31 @@ const editTodo = (id,todo) => {
             </div>
           </li>
         </TransitionGroup>
+
+          <div class="z-10">
+            <img src="/photos/hr.png" class="h-10 w-full" alt="">
+          </div>
+
+        <TransitionGroup tag="ul" name="list" class="transition-group-style" appear>
+          <li class="planned__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.doneTodos" :key="todo.id">
+            <!-- <input type="radio" class="mr-3"> -->
+            <input class="planned__list__text" v-model="todo.content" @keyup.enter="editTodo(todo.id, todo.content)">
+            <div class="planned__btn">
+              <div @click="editTodo(todo.id, todo.content)" class="planned__btn__delete"><img class="icon"
+                  src="https://cdn-icons-png.flaticon.com/512/4476/4476194.png" alt=""></div>
+              <div @click="setUnDone(todo.id, todo)" class="planned__btn__done"><img class="icon"
+                  src="https://cdn-icons-png.flaticon.com/512/4315/4315445.png" alt=""></div>
+              <div @click="deleteModalOpen(todo.id)" class="planned__btn__delete"><img class="icon"
+                  src="https://cdn-icons-png.flaticon.com/512/5028/5028066.png" alt=""></div>
+            </div>
+          </li>
+        </TransitionGroup>
       </template>
-    </Transition>
+    <!-- </TransitionGroup> -->
   </div>
 </template>
 
 <style lang="scss" scoped>
-
 .planned {
   @apply w-[50%];
   @apply min-w-[350px] min-h-[50px];
@@ -106,10 +128,11 @@ const editTodo = (id,todo) => {
       @apply w-[25px] cursor-pointer hover:scale-110;
     }
   }
-
   .done {
     @apply text-gray-400 line-through bg-green-300;
   }
+
+
 
 }
 </style>

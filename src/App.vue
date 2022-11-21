@@ -5,8 +5,8 @@ import NavbarComp from "./components/NavbarComp.vue"
 
 const authStore = useAuthStore();
 
-onBeforeMount(() => {
-  authStore.getCurrentUser();
+onBeforeMount(async() => {
+   authStore.getCurrentUser();
 });
 
 
