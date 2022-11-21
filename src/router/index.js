@@ -6,6 +6,7 @@ import PlannedView from '../views/PlannedView.vue'
 import DailyView from '../views/DailyView.vue'
 import ImportantView from '../views/ImportantView.vue'
 import MarketView from '../views/MarketView.vue'
+import ResetView from '../views/ResetView.vue'
 import { useAuthStore } from "../stores/use-auth"
 
 const router = createRouter({
@@ -25,6 +26,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
+    },
+    {
+      path: '/reset',
+      name: 'reset',
+      component: ResetView
     },
     {
       path: '/planned',
@@ -64,7 +70,7 @@ const router = createRouter({
 
 router.beforeEach(async(to,from,next) => {
   const authStore = useAuthStore();
-  if (!authStore.isLoggedIn && to.name !== "login" && to.name !== "register" && to.name !=="home") next({ name: 'login' });
+  if (!authStore.isLoggedIn && to.name !== "login" && to.name !== "register" && to.name !=="home" && to.name !=="reset") next({ name: 'login' });
   next();
 
 })

@@ -27,6 +27,10 @@ const goToRegister = () => {
   router.push("/register");
 };
 
+const goToReset = () => {
+  router.push("/reset");
+};
+
 const isValidEmail = computed(() => {
   return regexpStore.checkEmail(email.value);
 });
@@ -34,6 +38,8 @@ const isValidEmail = computed(() => {
 const isValidPassword = computed(() => {
   return regexpStore.checkPassword(password.value);
 });
+
+
 
 </script>
 
@@ -59,6 +65,7 @@ const isValidPassword = computed(() => {
         <p class="errmsg justify-center mr-5">{{ errMsg }}</p>
       </template>
       <p>Don't you have an accout? <span @click="goToRegister" class="register__link">Register</span></p>
+      <p>Forgot your password? <span @click="goToReset" class="register__link">Reset</span></p>
     </form>
   </div>
 

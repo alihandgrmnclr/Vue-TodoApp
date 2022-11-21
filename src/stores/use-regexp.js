@@ -9,7 +9,7 @@ export const useRegexpStore = defineStore("regexp", {
       return true;
     },
     checkUsername(username) {
-      const check = /^[A-Za-z0-9]\w{5,}$/.test(username);
+      const check = /^[A-Za-z0-9]\w{2,}$/.test(username);
       if (!check) return false;
       return true;
     },

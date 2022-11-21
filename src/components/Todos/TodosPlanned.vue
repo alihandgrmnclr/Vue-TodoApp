@@ -64,7 +64,7 @@ const editTodo = (id) => {
       <template v-if="showTodoList">
         <TransitionGroup tag="ul" name="list" class="transition-group-style" appear>
           <li class="planned__list" :class="{ 'done': todo.done }" v-for="todo in todoStore.todos" :key="todo.id">
-            <input type="radio" class="mr-3">
+            <!-- <input type="radio" class="mr-3"> -->
             <input class="planned__list__text" v-model="todo.content" @keyup.enter="editTodo(todo.id, todo.content)">
             <div class="planned__btn">
               <div @click="editTodo(todo.id, todo.content)" class="planned__btn__delete"><img class="icon"

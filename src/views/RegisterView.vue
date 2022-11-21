@@ -53,7 +53,7 @@ const isValidPassword = computed(() => {
     <input type="text" v-model="username" placeholder="username">
     <template v-if="!isValidUsername && username.length>0">
       <div class="errmsg">
-        <p>Min 6 characters</p>
+        <p>Min 3 characters</p>
       </div>
     </template>
     <input type="email" v-model="email" placeholder="email">
